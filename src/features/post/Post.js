@@ -4,29 +4,31 @@ import { usePostLists } from './hooks/hooks'
 import { postSelector } from './hooks/selectors';
 
 function Post() {
-  const [query, setQuery] = useState(1);
-  const [page, setPage] = useState(1);
-  const [{ state, setPost }] = usePostLists();
-  const { data, loading, error } = postSelector(state, page)
-
+  const [input, setInput] = useState(0);
+  const [userId, setUserId] = useState(0);
+  const [pageSelect, setPageSelect] = useState(0);
+  const { state }= usePostLists(userId);
+  const { data, loading, error } = postSelector(state, pageSelect)
   const handlePage = (page) => {
     const { isLoaded } = postSelector(state, page);
-    setPage(page)
-    if(!isLoaded) {
-      setPost(page)
+    setPageSelect(page)
+    if(page && !isLoaded) {
+      setUserId(page)
     }
   }
   return (
     <div>
-      <input
-        type="text"
-        placeholder="User ID"
-        value={query}
-        onChange={event => setQuery(event.target.value)}
-      />
-      <button type="button" onClick={() => handlePage(query)}>
-        Search
-      </button>
+      <form onSubmit={e => e.preventDefault()}>
+        <input
+          type="text"
+          placeholder="User ID"
+          value={input}
+          onChange={event => setInput(event.target.value)}
+        />
+        <button type="submit" onClick={() => handlePage(input)}>
+          Search
+        </button>
+      </form>
 
       {error && <div>{error}</div>}
       

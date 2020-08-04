@@ -1,36 +1,35 @@
 
 import React, { useState, Fragment } from 'react';
 import { usePostLists } from './hooks/hooks'
-import { postSelector } from './hooks/selectors';
 
 function Post() {
   const [input, setInput] = useState(0);
   const [userId, setUserId] = useState(0);
   const [pageSelect, setPageSelect] = useState(0);
-  const { state }= usePostLists(userId);
-  const { data, loading, error } = postSelector(state, pageSelect)
-  const handlePage = (page) => {
-    const { isLoaded } = postSelector(state, page);
-    setPageSelect(page)
-    if(page && !isLoaded) {
-      setUserId(page)
+  const { post }= usePostLists(userId);
+  const { data, loading, error } = post(pageSelect)
+  const handlePage = (userId) => {
+    const { isLoaded } = post(userId);
+    setPageSelect(userId)
+    if(userId && !isLoaded) {
+      setUserId(userId)
     }
   }
   return (
     <div>
       <form onSubmit={e => e.preventDefault()}>
         <input
-          type="text"
+          type="number"
           placeholder="User ID"
           value={input}
           onChange={event => setInput(event.target.value)}
         />
-        <button type="submit" onClick={() => handlePage(input)}>
+        <button type="submit" onClick={() => handlePage(parseInt(input))}>
           Search
         </button>
       </form>
 
-      {error && <div>{error}</div>}
+      {error && <div>{error.message}</div>}
       
       {loading ? (
         <div>Loading ...</div>

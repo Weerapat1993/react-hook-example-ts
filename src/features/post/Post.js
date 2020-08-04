@@ -22,9 +22,9 @@ function Post() {
           type="number"
           placeholder="User ID"
           value={input}
-          onChange={event => setInput(event.target.value)}
+          onChange={event => setInput(parseInt(event.target.value))}
         />
-        <button type="submit" onClick={() => handlePage(parseInt(input))}>
+        <button type="submit" onClick={() => handlePage(input)}>
           Search
         </button>
       </form>

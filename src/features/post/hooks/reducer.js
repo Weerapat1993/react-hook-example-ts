@@ -6,7 +6,7 @@ export const initialState = {
 }
 
 
-export const postReducer = (state, action) => {
+export const postReducer = (state = initialState, action) => {
   const { type } = action
   const { setStateWithKeyRequest, setStateWithKeySuccess, setStateWithKeyFailure } = reducerCreator(state, action)
   switch (type) {

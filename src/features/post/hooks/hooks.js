@@ -7,7 +7,7 @@ import { postSelector } from './selectors'
 
 export const usePostLists = (userId) => {
   // Reducer
-  const [post, dispatch] = useReducer(configLogger(postReducer), initialState);
+  const [state, dispatch] = useReducer(configLogger(postReducer), initialState);
   useEffect(() => {
     if(userId) {
       const fetchDataRequest = () => ({ type: FETCH_POST_BY_USER_ID.REQUEST, key: userId })
@@ -24,5 +24,5 @@ export const usePostLists = (userId) => {
     }
   }, [userId]); // shouldComponentUpdate
 
-  return { post: id => postSelector(post, id) };
+  return { post: id => postSelector(state, id) };
 }

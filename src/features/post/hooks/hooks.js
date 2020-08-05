@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from 'react';
 import axios from 'axios';
-import { postReducer, initialState } from './reducer'
 import { FETCH_POST_BY_USER_ID } from '../../../constants/actionTypes';
 import { configLogger } from '../../../config/logger';
+import { postReducer, initialState } from './reducer'
 import { postSelector } from './selectors'
 
 export const usePostLists = (userId) => {

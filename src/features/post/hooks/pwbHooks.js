@@ -10,7 +10,6 @@ export const usePostLists = (userId) => {
   const [state, dispatch] = useReducer(configLogger(reducer), initialState)
   useEffect(() => {
     if(userId) {
-      // ComponentDidUpdate
       const { actions } = createQuery(FETCH_POST_BY_USER_ID)
       const { request, success, failure } = actions(userId)
       const fetchData = () => {
@@ -19,6 +18,7 @@ export const usePostLists = (userId) => {
           .then(res => dispatch(success(res.data)))
           .catch(error => dispatch(failure(error)))
       };
+      // ComponentDidUpdate
       fetchData();
     }
   }, [userId]); // shouldComponentUpdate

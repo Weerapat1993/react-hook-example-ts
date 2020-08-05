@@ -4,15 +4,15 @@ import { usePostLists } from './hooks/hooks'
 
 function Post() {
   const [input, setInput] = useState(0);
-  const [userId, setUserId] = useState(0);
-  const [pageSelect, setPageSelect] = useState(0);
-  const { post }= usePostLists(userId);
-  const { data, loading, error } = post(pageSelect)
-  const handlePage = (userId) => {
-    const { isLoaded } = post(userId);
-    setPageSelect(userId)
-    if(userId && !isLoaded) {
-      setUserId(userId)
+  const [fetchByUserId, setFetchByUserId] = useState(0);
+  const [userSelectKey, setUserSelectKey] = useState(0);
+  const { post } = usePostLists(fetchByUserId);
+  const { data, loading, error } = post(userSelectKey)
+  const handleUser = () => {
+    const { isLoaded } = post(input);
+    setUserSelectKey(input)
+    if(input && !isLoaded) {
+      setFetchByUserId(input)
     }
   }
   return (
@@ -24,7 +24,7 @@ function Post() {
           value={input}
           onChange={event => setInput(parseInt(event.target.value))}
         />
-        <button type="submit" onClick={() => handlePage(input)}>
+        <button type="submit" onClick={handleUser}>
           Search
         </button>
       </form>

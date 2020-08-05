@@ -1,6 +1,6 @@
 
 import React, { useState, Fragment } from 'react';
-import { usePostLists } from './hooks/hooks'
+import { usePostLists } from './hooks/pwbHooks'
 
 function Post() {
   const [input, setInput] = useState(0);

@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { postReducer, initialState } from './reducer'
-import { FETCH } from './actionTypes';
+import { FETCH } from '../../../constants/actionTypes';
 import { configLogger } from '../../../config/logger';
 import { postSelector } from './selectors'
 

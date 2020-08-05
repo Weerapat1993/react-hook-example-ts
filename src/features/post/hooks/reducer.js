@@ -1,4 +1,4 @@
-import { FETCH } from "./actionTypes";
+import { FETCH } from "../../../constants/actionTypes";
 import { reducerCreator } from "../../../utils/reducerCreator";
 
 export const initialState = {

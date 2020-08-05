@@ -5,7 +5,7 @@ import 'beautiful-react-ui/beautiful-react-ui.css';
 function App() {
   return (
     <div>
-      <Post />
+      <Post userId={0} />
     </div>
   );
 }

@@ -2,10 +2,10 @@
 import React, { useState, Fragment } from 'react';
 import { usePostLists } from './hooks/pwbHooks'
 
-function Post() {
-  const [input, setInput] = useState(0);
-  const [fetchByUserId, setFetchByUserId] = useState(0);
-  const [userSelectKey, setUserSelectKey] = useState(0);
+function Post({ userId }) {
+  const [input, setInput] = useState(userId);
+  const [fetchByUserId, setFetchByUserId] = useState(userId);
+  const [userSelectKey, setUserSelectKey] = useState(userId);
   const { post } = usePostLists(fetchByUserId);
   const { data, loading, error } = post(userSelectKey)
   const handleUser = () => {
@@ -50,6 +50,10 @@ function Post() {
       )}
     </div>
   );
+}
+
+Post.defaultProps = {
+  userId: 0,
 }
 
 export default Post;

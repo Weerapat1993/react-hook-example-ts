@@ -1,14 +1,11 @@
 import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { FETCH_POST_BY_USER_ID } from '../../../constants/actionTypes';
-import { configLogger } from '../../../config/logger';
-import { createQuery } from '../../../utils/createQuery';
-import { createActions } from '../../../utils/createActions';
+import { createReducer, createActions, createSelector } from '../../../utils/createQuery';
 
 export const usePostLists = (userId) => {
   // Reducer
-  const { selector, reducer, initialState } = createQuery(FETCH_POST_BY_USER_ID)
-  const [state, dispatch] = useReducer(configLogger(reducer), initialState)
+  const [state, dispatch] = useReducer(...createReducer(FETCH_POST_BY_USER_ID))
   useEffect(() => {
     if(userId) {
       const { request, success, failure } = createActions(FETCH_POST_BY_USER_ID, userId)
@@ -22,5 +19,5 @@ export const usePostLists = (userId) => {
       fetchData();
     }
   }, [userId]); // shouldComponentUpdate
-  return { post: key => selector(state, key) };
+  return { post: key => createSelector(state, key) };
 }

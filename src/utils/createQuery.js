@@ -1,19 +1,13 @@
 import get from 'lodash/get';
 import { reducerCreator } from "./reducerCreator";
+import { configLogger } from '../config/logger';
 
 export const createQuery = (ACTION_TYPE) => {
   const initialState = {
     keys: {},
   }
-  const selector = (state, key) => get(state, `keys.${key}`, {
-    loading: false,
-    error: '',
-    isLoaded: false,
-    data: [], 
-  })
   return {
     initialState,
-    selector,
     reducer: (state = initialState, action) => {
       const { type } = action
       const { setStateWithKeyRequest, setStateWithKeySuccess, setStateWithKeyFailure } = reducerCreator(state, action)
@@ -30,3 +24,21 @@ export const createQuery = (ACTION_TYPE) => {
     }
   }
 }
+
+export const createActions = (ACTION_TYPE, key) => ({
+  request: () => ({ type: ACTION_TYPE.REQUEST, key }),
+  success: (data) => ({ type: ACTION_TYPE.SUCCESS, data, key }),
+  failure: (error) => ({ type: ACTION_TYPE.FAILURE, error, key }),
+})
+
+export const createReducer = (ACTION_TYPE) => {
+  const { reducer, initialState } = createQuery(ACTION_TYPE)
+  return [configLogger(reducer), initialState]
+}
+
+export const createSelector = (state, key) => get(state, `keys.${key}`, {
+  loading: false,
+  error: '',
+  isLoaded: false,
+  data: [], 
+})

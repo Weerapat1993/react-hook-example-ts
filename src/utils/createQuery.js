@@ -11,15 +11,9 @@ export const createQuery = (ACTION_TYPE) => {
     isLoaded: false,
     data: [], 
   })
-  const actions = (key) => ({
-    request: () => ({ type: ACTION_TYPE.REQUEST, key }),
-    success: (data) => ({ type: ACTION_TYPE.SUCCESS, data, key }),
-    failure: (error) => ({ type: ACTION_TYPE.FAILURE, error, key }),
-  })
   return {
     initialState,
     selector,
-    actions,
     reducer: (state = initialState, action) => {
       const { type } = action
       const { setStateWithKeyRequest, setStateWithKeySuccess, setStateWithKeyFailure } = reducerCreator(state, action)

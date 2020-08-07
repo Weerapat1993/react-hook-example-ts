@@ -3,16 +3,16 @@ import React, { useState, Fragment } from 'react';
 import { usePostLists } from './hooks/pwbHooks'
 
 function Post({ userId }) {
-  const [input, setInput] = useState(userId);
+  const [inputValue, setInput] = useState(userId);
   const [fetchByUserId, setFetchByUserId] = useState(userId);
   const [userSelectKey, setUserSelectKey] = useState(userId);
   const { post } = usePostLists(fetchByUserId);
   const { data, loading, error } = post(userSelectKey)
   const handleUser = () => {
-    const { isLoaded } = post(input);
-    setUserSelectKey(input)
-    if(input && !isLoaded) {
-      setFetchByUserId(input)
+    const { isLoaded } = post(inputValue);
+    setUserSelectKey(inputValue)
+    if(inputValue && !isLoaded) {
+      setFetchByUserId(inputValue)
     }
   }
   return (
@@ -21,7 +21,7 @@ function Post({ userId }) {
         <input
           type="number"
           placeholder="User ID"
-          value={input}
+          value={inputValue}
           onChange={event => setInput(parseInt(event.target.value))}
         />
         <button type="submit" onClick={handleUser}>

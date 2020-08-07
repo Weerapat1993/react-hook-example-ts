@@ -22,6 +22,5 @@ export const usePostLists = (userId) => {
       fetchData();
     }
   }, [userId]); // shouldComponentUpdate
-
   return { post: key => selector(state, key) };
 }

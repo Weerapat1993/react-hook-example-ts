@@ -1,10 +1,11 @@
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef } from 'react';
 import { useImmer } from 'use-immer'
 import { usePostList } from './hooks/usePostList'
 import { Button } from '../../components/Button';
 
 function Post({ userId }) {
+  const count = useRef(0)
   const [state, setState] = useImmer({
     inputValue: userId,
     fetchByUserId: userId,
@@ -27,7 +28,7 @@ function Post({ userId }) {
       draft.inputValue = value;
     })
   };
-  console.log('render');
+  console.log('render', count.current++);
   return (
     <div>
       <h2>Post</h2>

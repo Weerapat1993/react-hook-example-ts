@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AppContextProvider } from './contexts/AppContextProvider';
 // import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-// import { debugContextDevtool } from 'react-context-devtool';
+import { debugContextDevtool } from 'react-context-devtool';
 
 // const client = new ApolloClient({
 //   uri: 'https://api.graph.cool/simple/v1/ciyz901en4j590185wkmexyex',
@@ -30,6 +30,6 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-// debugContextDevtool(container, {
-//   disable: process.env.NODE_ENV === "production"
-// });
+debugContextDevtool(container, {
+  disable: process.env.NODE_ENV === "production"
+});

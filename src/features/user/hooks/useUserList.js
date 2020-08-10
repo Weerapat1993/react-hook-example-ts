@@ -9,7 +9,6 @@ export const useUserList = (userId) => {
   const user = useSelector('user')
   const dispatch = useDispatch()
   const userExpensive = useCallback(user, [user]);
-  // const [state, dispatch] = useReducer(...createReducer(FETCH_POST_BY_USER_ID))
   useEffect(() => {
     if(userId) {
       const { request, success, failure } = createActions(FETCH_USER, userId)

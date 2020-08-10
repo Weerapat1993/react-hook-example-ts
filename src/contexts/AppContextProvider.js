@@ -10,7 +10,6 @@ const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
   isEqual
 )
-// import { configLogger } from '../config/logger';
 
 // Context API
 export const AppContext = React.createContext(initialStore)

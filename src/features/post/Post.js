@@ -27,7 +27,7 @@ function Post({ userId }) {
       draft.inputValue = value;
     })
   };
-  console.log('Post, render');
+  console.log('render');
   return (
     <div>
       <h2>Post</h2>

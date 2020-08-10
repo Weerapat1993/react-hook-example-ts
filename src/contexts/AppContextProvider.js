@@ -1,6 +1,15 @@
 import React, { useContext } from 'react';
 import { useImmerReducer } from 'use-immer';
 import { initialStore, mainReducer } from '../config/store';
+import get from 'lodash/get';
+import { createSelectorCreator, defaultMemoize } from 'reselect'
+import isEqual from 'lodash/isEqual'
+
+// create a "selector creator" that uses lodash.isEqual instead of ===
+const createDeepEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  isEqual
+)
 // import { configLogger } from '../config/logger';
 
 // Context API
@@ -20,18 +29,27 @@ export const AppContextProvider = ({ children }) => {
   )
 }
 
-// Custom Hooks 
-const useStore = () => {
+// Custom Hooks
+const useSelector = (reducerName) => {
   const state = useContext(AppContext);
-  return state
+  const defaultState = {
+    loading: false,
+    error: '',
+    isLoaded: false,
+    data: [], 
+  }
+  return createDeepEqualSelector(
+    (key) => get(state, `${reducerName ? `${reducerName}.` : ''}keys.${key}`, defaultState),
+    (value) => value
+  )
 }
+
 const useDispatch = () => {
   const dispatch = useContext(DispatchContext);
   return dispatch;
 }
 
-const getState = useStore;
 export {
-  getState,
+  useSelector,
   useDispatch,
 }

@@ -1,14 +1,14 @@
 import { useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { FETCH_USER } from '../../../constants/actionTypes';
-import { createActions, createSelector } from '../../../utils/createQuery';
-import { getState, useDispatch } from '../../../contexts/AppContextProvider';
+import { createActions } from '../../../utils/createQuery';
+import { useDispatch, useSelector } from '../../../contexts/AppContextProvider';
 
 export const useUserList = (userId) => {
   // Reducer
-  const { user } = getState()
+  const user = useSelector('user')
   const dispatch = useDispatch()
-  const userExpensive = useCallback((key) => createSelector(user, key), [user]);
+  const userExpensive = useCallback(user, [user]);
   // const [state, dispatch] = useReducer(...createReducer(FETCH_POST_BY_USER_ID))
   useEffect(() => {
     if(userId) {

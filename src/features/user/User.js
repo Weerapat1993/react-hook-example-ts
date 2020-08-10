@@ -1,20 +1,32 @@
 
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
+import { useImmer } from 'use-immer'
 import { useUserList } from './hooks/useUserList'
+import { Button } from '../../components/Button';
 
 function User({ userId }) {
-  const [inputValue, setInput] = useState(userId);
-  const [fetchByUserId, setFetchByUserId] = useState(userId);
-  const [userSelectKey, setUserSelectKey] = useState(userId);
+  const [state, setState] = useImmer({
+    inputValue: userId,
+    fetchByUserId: userId,
+    userSelectKey: userId,
+  })
+  const { fetchByUserId, inputValue, userSelectKey } = state;
   const { user } = useUserList(fetchByUserId);
   const { data, loading, error } = user(userSelectKey)
   const handleUser = () => {
     const { isLoaded } = user(inputValue);
-    setUserSelectKey(inputValue)
-    if(inputValue && !isLoaded) {
-      setFetchByUserId(inputValue)
-    }
+    setState((draft) => {
+      draft.userSelectKey = inputValue
+      if(inputValue && !isLoaded) {
+        draft.fetchByUserId = inputValue
+      }
+    })
   }
+  const handleInput = (value) => {
+    setState((draft) => {
+      draft.inputValue = value;
+    })
+  };
   console.log('User, render');
   return (
     <div>
@@ -24,11 +36,11 @@ function User({ userId }) {
           type="number"
           placeholder="User ID"
           value={inputValue}
-          onChange={event => setInput(parseInt(event.target.value))}
+          onChange={e => handleInput(e.target.value ? parseInt(e.target.value) : '')}
         />
-        <button type="submit" onClick={handleUser}>
+        <Button type="submit" onClick={handleUser}>
           Search
-        </button>
+        </Button>
       </form>
 
       {error && <div>{error.message}</div>}

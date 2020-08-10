@@ -1,12 +1,14 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { FETCH_POST_BY_USER_ID } from '../../../constants/actionTypes';
 import { createActions, createSelector } from '../../../utils/createQuery';
-import { AppContext } from '../../../contexts/AppContextProvider';
+import { useDispatch, getState } from '../../../contexts/AppContextProvider';
 
 export const usePostList = (userId) => {
   // Reducer
-  const { state, dispatch } = useContext(AppContext)
+  const { post } = getState()
+  const dispatch = useDispatch()
+  const postExpensive = useCallback((key) => createSelector(post, key), [post]);
   // const [state, dispatch] = useReducer(...createReducer(FETCH_POST_BY_USER_ID))
   useEffect(() => {
     if(userId) {
@@ -21,5 +23,5 @@ export const usePostList = (userId) => {
       fetchData();
     }
   }, [userId, dispatch]); // shouldComponentUpdate
-  return { post: key => createSelector(state.post, key) };
+  return { post: postExpensive };
 }

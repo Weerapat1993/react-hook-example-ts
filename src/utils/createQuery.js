@@ -1,8 +1,8 @@
 import get from 'lodash/get';
 import { createSelectorCreator, defaultMemoize } from 'reselect'
+import produce from 'immer';
 import isEqual from 'lodash/isEqual'
-import { reducerCreator } from "./reducerCreator";
-import { configLogger } from '../config/logger';
+// import { reducerCreator } from "./reducerCreator";
 
 // create a "selector creator" that uses lodash.isEqual instead of ===
 const createDeepEqualSelector = createSelectorCreator(
@@ -16,20 +16,50 @@ export const createQuery = (ACTION_TYPE) => {
   }
   return {
     initialState,
-    reducer: (state = initialState, action) => {
-      const { type } = action
-      const { setStateWithKeyRequest, setStateWithKeySuccess, setStateWithKeyFailure } = reducerCreator(state, action)
+    reducer: produce((state = initialState, action) => {
+      const { type, key } = action
+      // const { setStateWithKeyRequest, setStateWithKeySuccess, setStateWithKeyFailure } = reducerCreator(state, action)
       switch (type) {
-        case ACTION_TYPE.REQUEST:
-          return setStateWithKeyRequest();
-        case ACTION_TYPE.SUCCESS:
-          return setStateWithKeySuccess({ data: action.data });
-        case ACTION_TYPE.FAILURE:
-          return setStateWithKeyFailure({ error: action.error.message });
-        default:
-          return state;
+        case ACTION_TYPE.REQUEST: {
+          if(!state.keys[key]) {
+            state.keys[key] = {};
+          }
+          state.keys[key].loading = true;
+          state.keys[key].isLoaded = false;
+          state.keys[key].error = ''
+          return;
+        }
+        case ACTION_TYPE.SUCCESS: {
+          if(!state.keys[key]) {
+            state.keys[key] = {};
+          }
+          state.keys[key].loading = false;
+          state.keys[key].isLoaded = true;
+          state.keys[key].data = action.data;
+          state.keys[key].error = ''
+          return;
+        }
+        case ACTION_TYPE.FAILURE: {
+          if(!state.keys[key]) {
+            state.keys[key] = {};
+          }
+          state.keys[key].loading = false;
+          state.keys[key].isLoaded = false;
+          state.keys[key].error = action.error;
+          return;
+        }
+        // case ACTION_TYPE.REQUEST:
+        //   return setStateWithKeyRequest();
+        // case ACTION_TYPE.SUCCESS:
+        //   return setStateWithKeySuccess({ data: action.data });
+        // case ACTION_TYPE.FAILURE:
+        //   return setStateWithKeyFailure({ error: action.error.message });
+        default: {
+          return;
+        }
+          // return state;
       }
-    }
+    })
   }
 }
 
@@ -41,7 +71,7 @@ export const createActions = (ACTION_TYPE, key) => ({
 
 export const createReducer = (ACTION_TYPE) => {
   const { reducer, initialState } = createQuery(ACTION_TYPE)
-  return [configLogger(reducer), initialState]
+  return [reducer, initialState]
 }
 
 // export const createSelector = (state, key) => get(state, `keys.${key}`, {

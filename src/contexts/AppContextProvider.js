@@ -1,15 +1,8 @@
 import React, { useContext } from 'react';
 import { useImmerReducer } from 'use-immer';
-import { initialStore, mainReducer } from '../config/store';
 import get from 'lodash/get';
-import { createSelectorCreator, defaultMemoize } from 'reselect'
-import isEqual from 'lodash/isEqual'
-
-// create a "selector creator" that uses lodash.isEqual instead of ===
-const createDeepEqualSelector = createSelectorCreator(
-  defaultMemoize,
-  isEqual
-)
+import { initialStore, mainReducer } from '../config/store';
+import { createDeepEqualSelector } from '../utils/reselect';
 
 // Context API
 export const AppContext = React.createContext(initialStore)
@@ -20,8 +13,8 @@ export const AppContextProvider = ({ children }) => {
   const [state, dispatch] = useImmerReducer(mainReducer, initialStore)
   // const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch])
   return (
-    <AppContext.Provider value={state} displayName="State Context">
-      <DispatchContext.Provider value={dispatch} displayName="Dispatch Context">
+    <AppContext.Provider value={state} displayName="App State Context">
+      <DispatchContext.Provider value={dispatch} displayName="App Dispatch Context">
         {children}
       </DispatchContext.Provider>
     </AppContext.Provider>

@@ -1,35 +1,12 @@
-import React, { createContext, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useImmerReducer } from 'use-immer';
 import get from 'lodash/get';
-import { createSelectorCreator, defaultMemoize } from 'reselect'
-import isEqual from 'lodash/isEqual'
 import { postSlice, userSlice } from '../config/store';
+import { createDeepEqualSelector } from '../utils/reselect';
+import { createReducerStores, initialState } from '../utils/contextAPI';
 
-// create a "selector creator" that uses lodash.isEqual instead of ===
-const createDeepEqualSelector = createSelectorCreator(
-  defaultMemoize,
-  isEqual
-)
-
-const initialState = {
-  keys: {}
-}
-
-// Context
-const UserDispatchContext = createContext()
-const PostDispatchContext = createContext()
-const UserContext = createContext(userSlice.initialState)
-const PostContext = createContext(postSlice.initialState)
-
-const contextStore = {
-  post: PostContext,
-  user: UserContext,
-}
-
-const dispatchStore = {
-  post: UserDispatchContext,
-  user: PostDispatchContext,
-}
+// Create Store
+const Store = createReducerStores(['post', 'user'])
 
 const rootReducer = {
   post: postSlice.reducer,
@@ -38,8 +15,8 @@ const rootReducer = {
 
 // Feature Context Provider
 export const FeatureContextProvider = ({ children, name }) => {
-  const AppContext = contextStore[name]
-  const AppDispatchContext = dispatchStore[name]
+  const AppContext = Store.contextStore[name]
+  const AppDispatchContext = Store.dispatchStore[name]
   const [state, dispatch] = useImmerReducer(rootReducer[name], initialState)
   return (
     <AppContext.Provider value={state} displayName={`${name}_context`}>
@@ -52,7 +29,7 @@ export const FeatureContextProvider = ({ children, name }) => {
 
 // Custom Hooks
 const useSelector = (reducerName) => {
-  const state = useContext(contextStore[reducerName]);
+  const state = useContext(Store.contextStore[reducerName]);
   const defaultState = {
     loading: false,
     error: '',
@@ -66,7 +43,7 @@ const useSelector = (reducerName) => {
 }
 
 const useDispatch = (reducerName) => {
-  const dispatch = useContext(dispatchStore[reducerName]);
+  const dispatch = useContext(Store.dispatchStore[reducerName]);
   return dispatch;
 }
 

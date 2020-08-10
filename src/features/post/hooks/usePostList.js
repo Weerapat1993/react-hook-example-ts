@@ -1,11 +1,13 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useContext } from 'react';
 import axios from 'axios';
 import { FETCH_POST_BY_USER_ID } from '../../../constants/actionTypes';
-import { createReducer, createActions, createSelector } from '../../../utils/createQuery';
+import { createActions, createSelector } from '../../../utils/createQuery';
+import { AppContext } from '../../../contexts/AppContextProvider';
 
-export const usePostLists = (userId) => {
+export const usePostList = (userId) => {
   // Reducer
-  const [state, dispatch] = useReducer(...createReducer(FETCH_POST_BY_USER_ID))
+  const { state, dispatch } = useContext(AppContext)
+  // const [state, dispatch] = useReducer(...createReducer(FETCH_POST_BY_USER_ID))
   useEffect(() => {
     if(userId) {
       const { request, success, failure } = createActions(FETCH_POST_BY_USER_ID, userId)
@@ -18,6 +20,6 @@ export const usePostLists = (userId) => {
       // ComponentDidUpdate
       fetchData();
     }
-  }, [userId]); // shouldComponentUpdate
-  return { post: key => createSelector(state, key) };
+  }, [userId, dispatch]); // shouldComponentUpdate
+  return { post: key => createSelector(state.post, key) };
 }

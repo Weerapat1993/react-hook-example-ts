@@ -1,12 +1,12 @@
 
 import React, { useState, Fragment } from 'react';
-import { usePostLists } from './hooks/pwbHooks'
+import { usePostList } from './hooks/usePostList'
 
 function Post({ userId }) {
   const [inputValue, setInput] = useState(userId);
   const [fetchByUserId, setFetchByUserId] = useState(userId);
   const [userSelectKey, setUserSelectKey] = useState(userId);
-  const { post } = usePostLists(fetchByUserId);
+  const { post } = usePostList(fetchByUserId);
   const { data, loading, error } = post(userSelectKey)
   const handleUser = () => {
     const { isLoaded } = post(inputValue);
@@ -15,6 +15,7 @@ function Post({ userId }) {
       setFetchByUserId(inputValue)
     }
   }
+  console.log('render');
   return (
     <div>
       <form onSubmit={e => e.preventDefault()}>

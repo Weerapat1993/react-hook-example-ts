@@ -1,6 +1,14 @@
 import get from 'lodash/get';
+import { createSelectorCreator, defaultMemoize } from 'reselect'
+import isEqual from 'lodash/isEqual'
 import { reducerCreator } from "./reducerCreator";
 import { configLogger } from '../config/logger';
+
+// create a "selector creator" that uses lodash.isEqual instead of ===
+const createDeepEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  isEqual
+)
 
 export const createQuery = (ACTION_TYPE) => {
   const initialState = {
@@ -19,7 +27,7 @@ export const createQuery = (ACTION_TYPE) => {
         case ACTION_TYPE.FAILURE:
           return setStateWithKeyFailure({ error: action.error.message });
         default:
-          throw new Error();
+          return state;
       }
     }
   }
@@ -36,9 +44,19 @@ export const createReducer = (ACTION_TYPE) => {
   return [configLogger(reducer), initialState]
 }
 
-export const createSelector = (state, key) => get(state, `keys.${key}`, {
-  loading: false,
-  error: '',
-  isLoaded: false,
-  data: [], 
-})
+// export const createSelector = (state, key) => get(state, `keys.${key}`, {
+//   loading: false,
+//   error: '',
+//   isLoaded: false,
+//   data: [], 
+// })
+
+export const createSelector = createDeepEqualSelector(
+  (state, key, reducerName) => get(state, `${reducerName ? `${reducerName}.` : ''}keys.${key}`, {
+    loading: false,
+    error: '',
+    isLoaded: false,
+    data: [], 
+  }),
+  value => value
+)

@@ -1,24 +1,24 @@
 
 import React, { useState, Fragment } from 'react';
-import { usePostList } from './hooks/usePostList'
+import { useUserList } from './hooks/useUserList'
 
-function Post({ userId }) {
+function User({ userId }) {
   const [inputValue, setInput] = useState(userId);
   const [fetchByUserId, setFetchByUserId] = useState(userId);
   const [userSelectKey, setUserSelectKey] = useState(userId);
-  const { post } = usePostList(fetchByUserId);
-  const { data, loading, error } = post(userSelectKey)
+  const { user } = useUserList(fetchByUserId);
+  const { data, loading, error } = user(userSelectKey)
   const handleUser = () => {
-    const { isLoaded } = post(inputValue);
+    const { isLoaded } = user(inputValue);
     setUserSelectKey(inputValue)
     if(inputValue && !isLoaded) {
       setFetchByUserId(inputValue)
     }
   }
-  console.log('render');
+  console.log('User, render');
   return (
     <div>
-      <h2>Post</h2>
+      <h2>User</h2>
       <form onSubmit={e => e.preventDefault()}>
         <input
           type="number"
@@ -41,11 +41,9 @@ function Post({ userId }) {
             <div>Error: {JSON.stringify(error)}</div>
           ) : (
             <ul>
-              {data.map(post => (
-                <li key={post.id}>
-                  {post.title}
-                </li>
-              ))}
+              <li>Name: {data.name}</li>
+              <li>Email: {data.email}</li>
+              <li>Phone: {data.phone}</li>
             </ul>
           )}
         </Fragment>
@@ -54,8 +52,8 @@ function Post({ userId }) {
   );
 }
 
-Post.defaultProps = {
+User.defaultProps = {
   userId: 0,
 }
 
-export default React.memo(Post);
+export default React.memo(User);

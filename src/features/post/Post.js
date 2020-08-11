@@ -13,7 +13,7 @@ function Post({ userId }) {
   })
   const { fetchByUserId, inputValue, userSelectKey } = state;
   const { post, refetch } = usePostList(fetchByUserId);
-  const { data, loading, error } = useMemo(() => post(userSelectKey), [post, userSelectKey])
+  const { data, loading, error } = post(userSelectKey)
   const isLoaded = useMemo(() => post(inputValue, 'isLoaded', false), [post, inputValue])
   const isData = (data || []).length > 0;
   const handleUser = () => {
@@ -29,29 +29,6 @@ function Post({ userId }) {
       draft.inputValue = value;
     })
   }
-  // Component Memo
-  const RenderError = useMemo(() => (
-    error && <div>{error}</div>
-  ), [error])
-  const RenderData = useMemo(() => (
-    loading ? (
-      <div>Loading ...</div>
-    ) : (
-      <Fragment>
-        {error ? (
-          <div>Error: {JSON.stringify(error)}</div>
-        ) : (
-          <ul>
-            {(data || []).map(post => (
-              <li key={post.id}>
-                {post.title}
-              </li>
-            ))}
-          </ul>
-        )}
-      </Fragment>
-    )
-  ), [loading, error, data])
   console.log('render', count.current++);
   return (
     <div>
@@ -67,13 +44,29 @@ function Post({ userId }) {
           Search
         </Button>
         {isData && (
-          <Button type="submit" onClick={refetch}>
+          <Button onClick={() => refetch(userSelectKey)}>
             Refetch
           </Button>
         )}
       </form>
-      {RenderError}      
-      {RenderData}
+      {error && <div>{error}</div>}      
+      {loading ? (
+        <div>Loading ...</div>
+      ) : (
+        <Fragment>
+          {error ? (
+            <div>Error: {JSON.stringify(error)}</div>
+          ) : (
+            <ul>
+              {(data || []).map(post => (
+                <li key={post.id}>
+                  {post.title}
+                </li>
+              ))}
+            </ul>
+          )}
+        </Fragment>
+      )}
     </div>
   );
 }

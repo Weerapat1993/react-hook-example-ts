@@ -9,17 +9,17 @@ export const usePostList = (userId) => {
   const post = useSelector('post')
   const dispatch = useDispatch('post')
   const postExpensive = useCallback(post, [post]);
-  const refetch = useCallback(() => {
-     const { request, success, failure } = createActions(FETCH_POST_BY_USER_ID, userId)
-    dispatch(request(userId));
-    return axios(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
-      .then(res => dispatch(success(res.data, userId)))
-      .catch(error => dispatch(failure(error, userId)))
-  }, [dispatch, userId]);
+  const refetch = useCallback((id) => {
+    const { request, success, failure } = createActions(FETCH_POST_BY_USER_ID, id)
+    dispatch(request());
+    return axios(`https://jsonplaceholder.typicode.com/posts?userId=${id}`)
+      .then(res => dispatch(success(res.data)))
+      .catch(error => dispatch(failure(error)))
+  }, [dispatch]);
   useEffect(() => {
     if(userId) {
       // ComponentDidUpdate
-      refetch();
+      refetch(userId);
     }
   }, [userId, refetch]); // shouldComponentUpdate
   return { post: postExpensive, refetch };

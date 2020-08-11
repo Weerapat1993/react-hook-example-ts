@@ -11,8 +11,8 @@ function App() {
       {/* <AppContextProvider> */}
         <FeatureContextProvider name="post">
           <FeatureContextProvider name="user">
-            <Post userId={1} />
-            <User userId={1} />
+            <Post userId={0} />
+            <User userId={0} />
           </FeatureContextProvider>
         </FeatureContextProvider>
       {/* </AppContextProvider> */}

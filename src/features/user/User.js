@@ -1,5 +1,6 @@
 
 import React, { Fragment, useRef, useMemo } from 'react';
+import isEmpty from 'lodash/isEmpty'
 import { useImmer } from 'use-immer'
 import { useUser } from './hooks/useUser'
 import { Button } from '../../components/Button';
@@ -12,9 +13,10 @@ function User({ userId }) {
     userSelectKey: userId,
   })
   const { fetchByUserId, inputValue, userSelectKey } = state;
-  const { user } = useUser(fetchByUserId);
-  const { data, loading, error } = useMemo(() => user(userSelectKey), [user, userSelectKey])
+  const { user, refetch } = useUser(fetchByUserId);
+  const { data, loading, error } = user(userSelectKey)
   const isLoaded = useMemo(() => user(inputValue, 'isLoaded', false), [user, inputValue])
+  const isData = !isEmpty(data);
   const handleUser = () => {
     setState((draft) => {
       draft.userSelectKey = inputValue
@@ -42,6 +44,11 @@ function User({ userId }) {
         <Button type="submit" onClick={handleUser}>
           Search
         </Button>
+        {isData && (
+          <Button onClick={() => refetch(userSelectKey)}>
+            Refetch
+          </Button>
+        )}
       </form>
 
       {error && <div>{error}</div>}
@@ -54,9 +61,11 @@ function User({ userId }) {
             <div>Error: {JSON.stringify(error)}</div>
           ) : (
             <ul>
+              <li>ID: {data.id}</li>
               <li>Name: {data.name}</li>
               <li>Email: {data.email}</li>
               <li>Phone: {data.phone}</li>
+              <li>Website: {data.website}</li>
             </ul>
           )}
         </Fragment>

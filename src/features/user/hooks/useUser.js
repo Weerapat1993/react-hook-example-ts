@@ -9,18 +9,18 @@ export const useUser = (userId) => {
   const user = useSelector('user')
   const dispatch = useDispatch('user')
   const userExpensive = useCallback(user, [user]);
+  const refetch = useCallback(() => {
+    const { request, success, failure } = createActions(FETCH_USER, userId)
+    dispatch(request());
+    return axios(`https://jsonplaceholder.typicode.com/users/${userId}`)
+      .then(res => dispatch(success(res.data)))
+      .catch(error => dispatch(failure(error)))
+  }, [dispatch, userId]);
   useEffect(() => {
     if(userId) {
-      const { request, success, failure } = createActions(FETCH_USER, userId)
-      const fetchData = () => {
-        dispatch(request());
-        return axios(`https://jsonplaceholder.typicode.com/users/${userId}`)
-          .then(res => dispatch(success(res.data)))
-          .catch(error => dispatch(failure(error)))
-      };
       // ComponentDidUpdate
-      fetchData();
+      refetch();
     }
-  }, [userId, dispatch]); // shouldComponentUpdate
-  return { user: userExpensive };
+  }, [userId, refetch]); // shouldComponentUpdate
+  return { user: userExpensive, refetch };
 }

@@ -14,7 +14,7 @@ function User({ userId }) {
   const { fetchByUserId, inputValue, userSelectKey } = state;
   const { user } = useUser(fetchByUserId);
   const { data, loading, error } = useMemo(() => user(userSelectKey), [user, userSelectKey])
-  const { isLoaded } = useMemo(() => user(inputValue), [user, inputValue])
+  const isLoaded = useMemo(() => user(inputValue, 'isLoaded', false), [user, inputValue])
   const handleUser = () => {
     setState((draft) => {
       draft.userSelectKey = inputValue

@@ -14,7 +14,7 @@ function Post({ userId }) {
   const { fetchByUserId, inputValue, userSelectKey } = state;
   const { post, refetch } = usePostList(fetchByUserId);
   const { data, loading, error } = useMemo(() => post(userSelectKey), [post, userSelectKey])
-  const { isLoaded } = useMemo(() => post(inputValue), [post, inputValue])
+  const isLoaded = useMemo(() => post(inputValue, 'isLoaded', false), [post, inputValue])
   const isData = (data || []).length > 0;
   const handleUser = () => {
     setState((draft) => {

@@ -31,7 +31,7 @@ const useSelector = (reducerName) => {
     data: [], 
   }
   return createDeepEqualSelector(
-    (key) => get(state, `${reducerName ? `${reducerName}.` : ''}keys.${key}`, defaultState),
+    (key, path, defaultValue) => path ? get(state, `${reducerName ? `${reducerName}.` : ''}keys.${key}.${path}`, defaultValue) : get(state, `${reducerName ? `${reducerName}.` : ''}keys.${key}`, defaultState),
     (value) => value
   )
 }

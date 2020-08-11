@@ -30,8 +30,14 @@ export const FeatureContextProvider = ({ children, name }) => {
 // Custom Hooks
 const useSelector = (reducerName) => {
   const state = useContext(Store.contextStore[reducerName]);
+  const defaultState = {
+    loading: false,
+    error: '',
+    isLoaded: false,
+    data: [], 
+  }
   return createDeepEqualSelector(
-    (key, path, defaultValue) => get(state, `keys.${key}.${path}`, defaultValue),
+    (key) => get(state, `keys.${key}`, defaultState),
     (value) => value
   )
 }

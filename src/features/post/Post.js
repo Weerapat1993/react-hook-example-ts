@@ -13,18 +13,16 @@ function Post({ userId }) {
   })
   const { fetchByUserId, inputValue, userSelectKey } = state;
   const { post, refetch } = usePostList(fetchByUserId);
-  const data = post(userSelectKey, 'data', [])
-  const loading = post(userSelectKey, 'loading', false)
-  const error = post(userSelectKey, 'error', '')
+  const { data, loading, error } = useMemo(() => post(userSelectKey), [post, userSelectKey])
+  const { isLoaded } = useMemo(() => post(inputValue), [post, inputValue])
   const handleUser = useCallback(() => {
-    const isLoaded = post(inputValue, 'isLoaded', false);
     setState((draft) => {
       draft.userSelectKey = inputValue
       if(inputValue && !isLoaded) {
         draft.fetchByUserId = inputValue
       }
     })
-  }, [setState, post, inputValue])
+  }, [setState, isLoaded, inputValue])
   const handleInput = useCallback((value) => {
     setState((draft) => {
       draft.inputValue = value;
@@ -33,7 +31,7 @@ function Post({ userId }) {
   // Component Memo
   const RenderList = useMemo(() => (
     <ul>
-      {data.map(post => (
+      {(data || []).map(post => (
         <li key={post.id}>
           {post.title}
         </li>

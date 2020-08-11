@@ -1,5 +1,5 @@
 
-import React, { Fragment, useRef } from 'react';
+import React, { Fragment, useRef, useMemo } from 'react';
 import { useImmer } from 'use-immer'
 import { useUser } from './hooks/useUser'
 import { Button } from '../../components/Button';
@@ -13,11 +13,9 @@ function User({ userId }) {
   })
   const { fetchByUserId, inputValue, userSelectKey } = state;
   const { user } = useUser(fetchByUserId);
-  const data = user(userSelectKey, 'data', [])
-  const loading = user(userSelectKey, 'loading', false)
-  const error = user(userSelectKey, 'error', '')
+  const { data, loading, error } = useMemo(() => user(userSelectKey), [user, userSelectKey])
+  const { isLoaded } = useMemo(() => user(inputValue), [user, inputValue])
   const handleUser = () => {
-    const isLoaded = user(inputValue, 'isLoaded', false);
     setState((draft) => {
       draft.userSelectKey = inputValue
       if(inputValue && !isLoaded) {

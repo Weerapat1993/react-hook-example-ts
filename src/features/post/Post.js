@@ -1,5 +1,5 @@
 
-import React, { Fragment, useRef, useMemo, useCallback } from 'react';
+import React, { Fragment, useRef, useMemo } from 'react';
 import { useImmer } from 'use-immer'
 import { usePostList } from './hooks/usePostList'
 import { Button } from '../../components/Button';
@@ -15,39 +15,24 @@ function Post({ userId }) {
   const { post, refetch } = usePostList(fetchByUserId);
   const { data, loading, error } = useMemo(() => post(userSelectKey), [post, userSelectKey])
   const { isLoaded } = useMemo(() => post(inputValue), [post, inputValue])
-  const handleUser = useCallback(() => {
+  const isData = (data || []).length > 0;
+  const handleUser = () => {
     setState((draft) => {
       draft.userSelectKey = inputValue
       if(inputValue && !isLoaded) {
         draft.fetchByUserId = inputValue
       }
     })
-  }, [setState, isLoaded, inputValue])
-  const handleInput = useCallback((value) => {
+  }
+  const handleInput = (value) => {
     setState((draft) => {
       draft.inputValue = value;
     })
-  }, [setState]);
+  }
   // Component Memo
-  const RenderList = useMemo(() => (
-    <ul>
-      {(data || []).map(post => (
-        <li key={post.id}>
-          {post.title}
-        </li>
-      ))}
-    </ul>
-  ), [data])
   const RenderError = useMemo(() => (
     error && <div>{error}</div>
   ), [error])
-  const RenderRefetchButton = useMemo(() => (
-    (data || []).length > 0 && (
-      <Button type="submit" onClick={refetch}>
-        Refetch
-      </Button>
-    )
-  ), [data, refetch])
   const RenderData = useMemo(() => (
     loading ? (
       <div>Loading ...</div>
@@ -56,30 +41,37 @@ function Post({ userId }) {
         {error ? (
           <div>Error: {JSON.stringify(error)}</div>
         ) : (
-          RenderList
+          <ul>
+            {(data || []).map(post => (
+              <li key={post.id}>
+                {post.title}
+              </li>
+            ))}
+          </ul>
         )}
       </Fragment>
     )
-  ), [loading, error, RenderList])
-  const RenderSearch = useMemo(() => (
-    <form onSubmit={e => e.preventDefault()}>
-      <input
-        type="number"
-        placeholder="User ID"
-        value={inputValue}
-        onChange={e => handleInput(e.target.value ? parseInt(e.target.value) : '')}
-      />
-      <Button type="submit" onClick={handleUser}>
-        Search
-      </Button>
-      {RenderRefetchButton}
-    </form>
-  ), [inputValue, RenderRefetchButton, handleInput, handleUser])
+  ), [loading, error, data])
   console.log('render', count.current++);
   return (
     <div>
       <h2>Post</h2>
-      {RenderSearch}
+      <form onSubmit={e => e.preventDefault()}>
+        <input
+          type="number"
+          placeholder="User ID"
+          value={inputValue}
+          onChange={e => handleInput(e.target.value ? parseInt(e.target.value) : '')}
+        />
+        <Button type="submit" onClick={handleUser}>
+          Search
+        </Button>
+        {isData && (
+          <Button type="submit" onClick={refetch}>
+            Refetch
+          </Button>
+        )}
+      </form>
       {RenderError}      
       {RenderData}
     </div>

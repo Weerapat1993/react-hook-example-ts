@@ -14,12 +14,8 @@ import * as serviceWorker from './serviceWorker';
 const container = document.getElementById("root");
 
 ReactDOM.render(
-  <React.StrictMode>
-    {/* <ApolloProvider client={client}> */}
-        <App />
-    {/* </ApolloProvider> */}
-  </React.StrictMode>,
-  container
+  <App />
+  ,container
 );
 
 // If you want your app to work offline and load faster, you can change

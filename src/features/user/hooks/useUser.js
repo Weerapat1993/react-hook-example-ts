@@ -4,7 +4,7 @@ import { FETCH_USER } from '../../../constants/actionTypes';
 import { createActions } from '../../../utils/createQuery';
 import { useDispatch, useSelector } from '../../../contexts/FeatureContextProvider';
 
-export const useUserList = (userId) => {
+export const useUser = (userId) => {
   // Reducer
   const user = useSelector('user')
   const dispatch = useDispatch('user')

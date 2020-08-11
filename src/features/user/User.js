@@ -1,7 +1,7 @@
 
 import React, { Fragment, useRef } from 'react';
 import { useImmer } from 'use-immer'
-import { useUserList } from './hooks/useUserList'
+import { useUser } from './hooks/useUser'
 import { Button } from '../../components/Button';
 
 function User({ userId }) {
@@ -12,10 +12,12 @@ function User({ userId }) {
     userSelectKey: userId,
   })
   const { fetchByUserId, inputValue, userSelectKey } = state;
-  const { user } = useUserList(fetchByUserId);
-  const { data, loading, error } = user(userSelectKey)
+  const { user } = useUser(fetchByUserId);
+  const data = user(userSelectKey, 'data', [])
+  const loading = user(userSelectKey, 'loading', false)
+  const error = user(userSelectKey, 'error', '')
   const handleUser = () => {
-    const { isLoaded } = user(inputValue);
+    const isLoaded = user(inputValue, 'isLoaded', false);
     setState((draft) => {
       draft.userSelectKey = inputValue
       if(inputValue && !isLoaded) {
@@ -44,7 +46,7 @@ function User({ userId }) {
         </Button>
       </form>
 
-      {error && <div>{error.message}</div>}
+      {error && <div>{error}</div>}
       
       {loading ? (
         <div>Loading ...</div>

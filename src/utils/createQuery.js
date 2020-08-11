@@ -45,7 +45,7 @@ export const createQuery = (ACTION_TYPE) => {
           }
           state.keys[key].loading = false;
           state.keys[key].isLoaded = false;
-          state.keys[key].error = action.error;
+          state.keys[key].error = action.error.message;
           return;
         }
         // case ACTION_TYPE.REQUEST:

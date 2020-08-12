@@ -17,7 +17,8 @@ export const createQuery = (ACTION_TYPE) => {
   return {
     initialState,
     reducer: produce((state = initialState, action) => {
-      const { type, key } = action
+      const { type, payload } = action
+      const { key } = payload
       // const { setStateWithKeyRequest, setStateWithKeySuccess, setStateWithKeyFailure } = reducerCreator(state, action)
       switch (type) {
         case ACTION_TYPE.REQUEST: {
@@ -35,7 +36,7 @@ export const createQuery = (ACTION_TYPE) => {
           }
           state.keys[key].loading = false;
           state.keys[key].isLoaded = true;
-          state.keys[key].data = action.data;
+          state.keys[key].data = payload.data;
           state.keys[key].error = ''
           return;
         }
@@ -45,7 +46,7 @@ export const createQuery = (ACTION_TYPE) => {
           }
           state.keys[key].loading = false;
           state.keys[key].isLoaded = false;
-          state.keys[key].error = action.error.message;
+          state.keys[key].error = payload.error.message;
           return;
         }
         // case ACTION_TYPE.REQUEST:
@@ -63,10 +64,10 @@ export const createQuery = (ACTION_TYPE) => {
   }
 }
 
-export const createActions = (ACTION_TYPE, key) => ({
-  request: () => ({ type: ACTION_TYPE.REQUEST, key }),
-  success: (data) => ({ type: ACTION_TYPE.SUCCESS, data, key }),
-  failure: (error) => ({ type: ACTION_TYPE.FAILURE, error, key }),
+export const createActions = (ACTION_TYPE) => ({
+  request: (payload) => ({ type: ACTION_TYPE.REQUEST, payload }),
+  success: (payload) => ({ type: ACTION_TYPE.SUCCESS, payload }),
+  failure: (payload) => ({ type: ACTION_TYPE.FAILURE, payload }),
 })
 
 export const createReducer = (ACTION_TYPE) => {

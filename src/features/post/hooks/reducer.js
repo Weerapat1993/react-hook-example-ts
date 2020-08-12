@@ -7,15 +7,15 @@ export const initialState = {
 
 
 export const postReducer = (state = initialState, action) => {
-  const { type } = action
+  const { type, payload } = action
   const { setStateWithKeyRequest, setStateWithKeySuccess, setStateWithKeyFailure } = reducerCreator(state, action)
   switch (type) {
     case FETCH_POST_BY_USER_ID.REQUEST:
       return setStateWithKeyRequest();
     case FETCH_POST_BY_USER_ID.SUCCESS:
-      return setStateWithKeySuccess({ data: action.data });
+      return setStateWithKeySuccess({ data: payload.data });
     case FETCH_POST_BY_USER_ID.FAILURE:
-      return setStateWithKeyFailure({ error: action.error.message });
+      return setStateWithKeyFailure({ error: payload.error.message });
     default:
       throw new Error();
   }

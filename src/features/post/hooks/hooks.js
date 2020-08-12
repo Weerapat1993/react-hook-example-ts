@@ -10,14 +10,14 @@ export const usePostLists = (userId) => {
   const [state, dispatch] = useReducer(configLogger(postReducer), initialState);
   useEffect(() => {
     if(userId) {
-      const fetchDataRequest = () => ({ type: FETCH_POST_BY_USER_ID.REQUEST, key: userId })
-      const fetchDataSuccess = (data) => ({ type: FETCH_POST_BY_USER_ID.SUCCESS, data, key: userId })
-      const fetchDataFailure = (error) => ({ type: FETCH_POST_BY_USER_ID.FAILURE, error, key: userId })
+      const fetchDataRequest = (payload) => ({ type: FETCH_POST_BY_USER_ID.REQUEST, payload })
+      const fetchDataSuccess = (payload) => ({ type: FETCH_POST_BY_USER_ID.SUCCESS, payload })
+      const fetchDataFailure = (payload) => ({ type: FETCH_POST_BY_USER_ID.FAILURE, payload })
       const fetchData = () => {
-        dispatch(fetchDataRequest());
+        dispatch(fetchDataRequest({ key: userId }));
         return axios(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
-          .then(res => dispatch(fetchDataSuccess(res.data)))
-          .catch(error => dispatch(fetchDataFailure(error)))
+          .then(({ data }) => dispatch(fetchDataSuccess({ data, key: userId })))
+          .catch(error => dispatch(fetchDataFailure({ error, key: userId })))
       };
       // ComponentDidUpdate
       fetchData();

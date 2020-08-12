@@ -1,6 +1,7 @@
 
 export const reducerCreator = (state, action) => {
-  const { key } = action
+  const { payload } = action
+  const { key } = payload
   const setState = (newState) => ({
     ...state,
     ...newState,

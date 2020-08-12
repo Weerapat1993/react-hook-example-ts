@@ -2,7 +2,7 @@ import { useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { FETCH_USER } from '../../../constants/actionTypes';
 import { createActions } from '../../../utils/createQuery';
-import { useDispatch, useSelector } from '../../../contexts/FeatureContextProvider';
+import { useDispatch, useSelector } from '../../../config/context';
 
 export const useUser = (userId) => {
   // Reducer

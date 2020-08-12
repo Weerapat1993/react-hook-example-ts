@@ -1,11 +1,12 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from '../../../config/context';
-import { request, success, failure } from '../redux/postSlice'
+import { request, success, failure, makeSelectPostByUserId } from '../redux/postSlice'
 
 export const usePostList = (userId) => {
   // Reducer
-  const post = useSelector('post')
+  const selectPostByUserId = useMemo(makeSelectPostByUserId, [])
+  const post = useSelector('post', selectPostByUserId)
   const dispatch = useDispatch('post')
   const postExpensive = useCallback(post, [post]);
   const refetch = useCallback((key) => {

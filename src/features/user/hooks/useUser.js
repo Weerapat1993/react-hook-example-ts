@@ -1,11 +1,12 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from '../../../config/context';
-import { request, success, failure } from '../redux/userSlice'
+import { request, success, failure, makeSelectUserById } from '../redux/userSlice'
 
 export const useUser = (userId) => {
   // Reducer
-  const user = useSelector('user')
+  const selectUserById = useMemo(makeSelectUserById, [])
+  const user = useSelector('user', selectUserById)
   const dispatch = useDispatch('user')
   const userExpensive = useCallback(user, [user]);
   const refetch = useCallback((key) => {

@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import { useImmerReducer } from 'use-immer';
-import get from 'lodash/get';
-import { createDeepEqualSelector } from '../utils/reselect';
 import { createReducerStores, initialState } from '../utils/contextAPI';
 import { userSlice } from '../features/user/redux/userSlice'
 import { postSlice } from '../features/post/redux/postSlice'
@@ -29,18 +27,9 @@ export const FeatureContextProvider = ({ children, name }) => {
 }
 
 // Custom Hooks
-const useSelector = (reducerName) => {
+const useSelector = (reducerName, callback) => {
   const state = useContext(Store.contextStore[reducerName]);
-  const defaultState = {
-    loading: false,
-    error: '',
-    isLoaded: false,
-    data: [], 
-  }
-  return createDeepEqualSelector(
-    (key, path, defaultValue) => path ? get(state, `keys.${key}.${path}`, defaultValue) : get(state, `keys.${key}`, defaultState),
-    (value) => value
-  )
+  return callback(state)
 }
 
 const useDispatch = (reducerName) => {

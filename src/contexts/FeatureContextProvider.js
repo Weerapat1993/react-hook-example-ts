@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { useImmerReducer } from 'use-immer';
 import get from 'lodash/get';
-import { postSlice, userSlice } from '../config/store';
 import { createDeepEqualSelector } from '../utils/reselect';
 import { createReducerStores, initialState } from '../utils/contextAPI';
+import { userSlice } from '../features/user/redux/userSlice'
+import { postSlice } from '../features/post/redux/postSlice'
 
 // Create Store
 const Store = createReducerStores(['post', 'user'])

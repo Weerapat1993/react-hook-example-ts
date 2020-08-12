@@ -1,8 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { FETCH_USER } from '../../../constants/actionTypes';
-import { createActions } from '../../../utils/createQuery';
 import { useDispatch, useSelector } from '../../../config/context';
+import { request, success, failure } from '../redux/userSlice'
 
 export const useUser = (userId) => {
   // Reducer
@@ -10,7 +9,6 @@ export const useUser = (userId) => {
   const dispatch = useDispatch('user')
   const userExpensive = useCallback(user, [user]);
   const refetch = useCallback((key) => {
-    const { request, success, failure } = createActions(FETCH_USER)
     dispatch(request({ key }));
     return axios(`https://jsonplaceholder.typicode.com/users/${key}`)
       .then(({ data }) => dispatch(success({ data, key })))

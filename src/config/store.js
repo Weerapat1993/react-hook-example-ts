@@ -1,8 +1,5 @@
-import { FETCH_POST_BY_USER_ID, FETCH_USER } from '../constants/actionTypes'
-import { createQuery } from '../utils/createQuery';
-
-export const postSlice = createQuery(FETCH_POST_BY_USER_ID)
-export const userSlice = createQuery(FETCH_USER)
+import { postSlice } from '../features/post/redux/postSlice'
+import { userSlice } from '../features/user/redux/userSlice'
 
 // Initial Store
 export const initialStore = {

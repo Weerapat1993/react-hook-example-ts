@@ -1,1 +1,2 @@
-export { useDispatch, useSelector } from '../contexts/AppContextProvider'
+export { useDispatch, useSelector } from '../contexts/FeatureContextProvider'
+export { Provider } from '../utils/tools/Provider'

@@ -3,7 +3,7 @@ import { useImmerReducer } from 'use-immer';
 import { store } from '../config/store'
 
 // Feature Context Provider
-export const FeatureContextProvider = ({ children, name }) => {
+export const FeatureContextProvider = React.memo(({ children, name }) => {
   const AppContext = store.context(name)
   const AppDispatchContext = store.dispatch(name)
   const [state, dispatch] = useImmerReducer(store.reducer[name], store.initialState[name])
@@ -14,7 +14,7 @@ export const FeatureContextProvider = ({ children, name }) => {
       </AppDispatchContext.Provider>
     </AppContext.Provider>
   )
-}
+})
 
 // Custom Hooks
 const useSelector = (reducerName, callback) => {

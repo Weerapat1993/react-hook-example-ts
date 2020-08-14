@@ -15,7 +15,7 @@ export const AppContext = React.createContext(store.initialState)
 export const DispatchContext = React.createContext();
 
 // Context Provider
-export const AppContextProvider = ({ children }) => {
+export const AppContextProvider = React.memo(({ children }) => {
   const [state, dispatch] = useImmerReducer(mainReducer, store.initialState)
   // const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch])
   return (
@@ -25,7 +25,7 @@ export const AppContextProvider = ({ children }) => {
       </DispatchContext.Provider>
     </AppContext.Provider>
   )
-}
+})
 
 // Custom Hooks
 const useSelector = (reducerName, callback) => {

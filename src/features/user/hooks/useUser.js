@@ -1,7 +1,6 @@
 import { useEffect, useCallback, useMemo } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from '../../../config/context';
-import { request, success, failure, makeSelectUserById } from '../redux/userSlice'
+import { makeSelectUserById, fetchUserById } from '../redux/userSlice'
 
 export const useUser = (userId) => {
   // Reducer
@@ -9,12 +8,7 @@ export const useUser = (userId) => {
   const user = useSelector('user', selectUserById)
   const dispatch = useDispatch('user')
   const userExpensive = useCallback(user, [user]);
-  const refetch = useCallback((key) => {
-    dispatch(request({ key }));
-    return axios(`https://jsonplaceholder.typicode.com/users/${key}`)
-      .then(({ data }) => dispatch(success({ data, key })))
-      .catch(error => dispatch(failure({ error, key })))
-  }, [dispatch]);
+  const refetch = useCallback((key) => fetchUserById(key)(dispatch), [dispatch])
   useEffect(() => {
     if(userId) {
       // ComponentDidUpdate

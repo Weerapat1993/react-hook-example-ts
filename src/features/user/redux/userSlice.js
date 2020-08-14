@@ -1,3 +1,4 @@
+import axios from 'axios'
 import get from 'lodash/get'
 import { createSelector } from 'reselect';
 import { querySlice } from '../../../utils/tools/reduxToolkit'
@@ -12,6 +13,14 @@ const defaultState = {
 export const userSlice = querySlice('user')
 
 export const { request, success, failure } = userSlice.actions;
+
+// Async Action
+export const fetchUserById = (key) => (dispatch) => {
+  dispatch(request({ key }));
+  return axios(`https://jsonplaceholder.typicode.com/users/${key}`)
+    .then(({ data }) => dispatch(success({ data, key })))
+    .catch(error => dispatch(failure({ error, key })))
+}
 
 // Selector
 export const selectUserById = createSelector(

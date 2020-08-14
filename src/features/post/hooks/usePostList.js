@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from '../../../config/context';
-import { makeSelectPostByUserId, fetchPostByUserId } from '../redux/postSlice'
+import { makeSelectPostByUserId, fetchPostByUserId } from '../../../app/post'
 
 export const usePostList = (userId) => {
   // Reducer

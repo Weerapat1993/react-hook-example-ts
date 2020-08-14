@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from '../../../config/context';
-import { makeSelectUserById, fetchUserById } from '../redux/userSlice'
+import { makeSelectUserById, fetchUserById } from '../../../app/user'
 
 export const useUser = (userId) => {
   // Reducer

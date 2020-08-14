@@ -1,7 +1,13 @@
 import React, { useContext } from 'react';
+import { oneOfType, node, arrayOf } from 'prop-types'
 import { useImmerReducer } from 'use-immer';
 import { postSlice } from '../features/post/redux/postSlice'
 import { userSlice } from '../features/user/redux/userSlice'
+
+const initialConfigureStore = {
+  initialState: {},
+  reducer: {},
+}
 
 // Combine Reducer
 export const mainReducer = (state, action) => ({
@@ -14,7 +20,7 @@ export const AppContext = React.createContext()
 export const DispatchContext = React.createContext();
 
 // Context Provider
-export const AppContextProvider = React.memo(({ children, store }) => {
+export const Provider = React.memo(({ children, store }) => {
   const [state, dispatch] = useImmerReducer(mainReducer, store.initialState)
   // const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch])
   return (
@@ -25,6 +31,18 @@ export const AppContextProvider = React.memo(({ children, store }) => {
     </AppContext.Provider>
   )
 })
+
+Provider.propTypes = {
+  children: oneOfType([
+    arrayOf(node),
+    node,
+  ]),
+}
+
+Provider.defaultProps = {
+  store: initialConfigureStore,
+  children: null,
+}
 
 // Custom Hooks
 const useSelector = (reducerName, callback) => {

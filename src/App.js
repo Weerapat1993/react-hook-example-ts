@@ -5,7 +5,7 @@ import 'beautiful-react-ui/beautiful-react-ui.css';
 import User from './features/user/User';
 import './App.css';
 import { Provider } from './config/context';
-import { store } from './config/store';
+import { store } from './app/store';
 
 function App() {
   return (

@@ -1,6 +1,6 @@
-import { postSlice } from '../features/post/redux/postSlice'
-import { userSlice } from '../features/user/redux/userSlice'
-import { configureStore } from '../utils/tools/reduxToolkit';
+import { postSlice } from './post'
+import { userSlice } from './user'
+import { configureStore } from '../utils/use-codex';
 
 export const store = configureStore({
   initialState: {

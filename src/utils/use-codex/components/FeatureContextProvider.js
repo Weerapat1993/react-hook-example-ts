@@ -29,7 +29,55 @@ export const FeatureContextProvider = React.memo(({ children, name, store }) => 
 
 FeatureContextProvider.defaultProps = {
   name: 'app',
-  store: initialConfigureStore
+  store: initialConfigureStore,
+  children: null,
+}
+
+const ContextComposer = ({contexts, children}) => {
+  // Compose Consumers for renderfns
+  if (typeof children === 'function') {
+    const curriedContexts = [];
+    const curry = (currentContexts) => {
+      if (!currentContexts.length) {
+        return children(...curriedContexts);
+      }
+
+      const Context = currentContexts.pop();
+
+      return (
+        <Context.Consumer>
+          {(providedContext) => {
+            curriedContexts.push(providedContext);
+
+            return curry(currentContexts);
+          }}
+        </Context.Consumer>
+      );
+    }
+
+    return curry(contexts.slice().reverse());
+
+  // Compose Providers
+  } else {
+    return contexts.reduceRight((children, parent, i) => {
+      return React.cloneElement(parent, {
+        children,
+      });
+    }, children);
+  }
+}
+
+export const Provider = ({ features, children, store }) => {
+  const contexts = features.map(name => <FeatureContextProvider store={store} name={name} />)
+  return (
+    <ContextComposer contexts={contexts}>
+      {children}
+    </ContextComposer>
+  )
+}
+
+Provider.defaultProps = {
+  features: [],
 }
 
 // Custom Hooks

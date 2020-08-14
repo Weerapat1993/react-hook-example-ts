@@ -1,7 +1,7 @@
 import axios from 'axios'
 import get from 'lodash/get'
 import { createSelector } from 'reselect';
-import { querySlice } from '../../../utils/tools/reduxToolkit'
+import { querySlice } from '../utils/use-codex'
 
 const defaultState = {
   loading: false,

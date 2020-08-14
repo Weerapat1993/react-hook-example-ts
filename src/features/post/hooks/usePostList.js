@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from '../../../config/context';
+import { useDispatch, useSelector } from '../../../utils/use-codex';
 import { makeSelectPostByUserId, fetchPostByUserId } from '../../../app/post'
 
 export const usePostList = (userId) => {

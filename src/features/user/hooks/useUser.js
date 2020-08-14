@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from '../../../config/context';
+import { useDispatch, useSelector } from '../../../utils/use-codex';
 import { makeSelectUserById, fetchUserById } from '../../../app/user'
 
 export const useUser = (userId) => {

@@ -4,7 +4,7 @@ import Post from './features/post/Post';
 import 'beautiful-react-ui/beautiful-react-ui.css';
 import User from './features/user/User';
 import './App.css';
-import { Provider } from './config/context';
+import { Provider } from './utils/use-codex';
 import { store } from './app/store';
 
 function App() {

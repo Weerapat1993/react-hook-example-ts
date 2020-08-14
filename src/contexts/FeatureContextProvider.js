@@ -1,22 +1,12 @@
 import React, { useContext } from 'react';
 import { useImmerReducer } from 'use-immer';
-import { createReducerStores, initialState } from '../utils/contextAPI';
-import { userSlice } from '../features/user/redux/userSlice'
-import { postSlice } from '../features/post/redux/postSlice'
-
-// Create Store
-const Store = createReducerStores(['post', 'user'])
-
-const rootReducer = {
-  post: postSlice.reducer,
-  user: userSlice.reducer,
-};
+import { store } from '../config/store'
 
 // Feature Context Provider
 export const FeatureContextProvider = ({ children, name }) => {
-  const AppContext = Store.contextStore[name]
-  const AppDispatchContext = Store.dispatchStore[name]
-  const [state, dispatch] = useImmerReducer(rootReducer[name], initialState)
+  const AppContext = store.context(name)
+  const AppDispatchContext = store.dispatch(name)
+  const [state, dispatch] = useImmerReducer(store.reducer[name], store.initialState[name])
   return (
     <AppContext.Provider value={state} displayName={`${name}_context`}>
       <AppDispatchContext.Provider value={dispatch} displayName={`${name}_dispatch_context`} >
@@ -28,12 +18,12 @@ export const FeatureContextProvider = ({ children, name }) => {
 
 // Custom Hooks
 const useSelector = (reducerName, callback) => {
-  const state = useContext(Store.contextStore[reducerName]);
+  const state = useContext(store.context(reducerName));
   return callback(state)
 }
 
 const useDispatch = (reducerName) => {
-  const dispatch = useContext(Store.dispatchStore[reducerName]);
+  const dispatch = useContext(store.dispatch(reducerName));
   return dispatch;
 }
 

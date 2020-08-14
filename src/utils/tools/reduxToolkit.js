@@ -1,4 +1,11 @@
+import { createContext } from "react"
 import produce from "immer"
+
+/**
+ * @typedef {Object} ConfigStore
+ * @property {Object} initialState
+ * @property {Object} reducer
+ */
 
 /**
  * @typedef {Object} CreateSlice
@@ -78,3 +85,26 @@ export const querySlice = (name) => createSlice({
     },
   },
 });
+
+/**
+ * Configure Store
+ * @param {ConfigStore} config 
+ */
+export const configureStore = (config) => {
+  const { reducer, initialState } = config;
+  const reducerNames = Object.keys(reducer).map(key => key)
+  const contextStore = {};
+  const dispatchStore = {};
+  reducerNames.forEach(name => {
+    contextStore[name] = createContext(initialState[name]);
+    dispatchStore[name] = createContext()
+  })
+  const context = (name) => contextStore[name]
+  const dispatch = (name) => dispatchStore[name]
+  return {
+    context,
+    dispatch,
+    initialState,
+    reducer,
+  }
+}

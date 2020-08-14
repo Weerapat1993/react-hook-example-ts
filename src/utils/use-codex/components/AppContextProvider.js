@@ -16,7 +16,7 @@ export const mainReducer = (state, action) => ({
 });
 
 // Context API
-export const AppContext = React.createContext()
+export const AppContext = React.createContext({})
 export const DispatchContext = React.createContext();
 
 // Context Provider

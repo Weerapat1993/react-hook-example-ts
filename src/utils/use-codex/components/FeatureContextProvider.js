@@ -12,18 +12,15 @@ const StoreContext = createContext(initialConfigureStore)
 
 // Feature Context Provider
 export const FeatureContextProvider = React.memo(({ children, name, store }) => {
-  const [myStore] = useState(store);
   const AppContext = store.context(name)
   const AppDispatchContext = store.dispatch(name)
   const [state, dispatch] = useImmerReducer(store.reducer[name], store.initialState[name])
   return (
-    <StoreContext.Provider value={myStore}>
-      <AppContext.Provider value={state} displayName={`${name}_context`}>
-        <AppDispatchContext.Provider value={dispatch} displayName={`${name}_dispatch_context`} >
-          {children}
-        </AppDispatchContext.Provider>
-      </AppContext.Provider>
-    </StoreContext.Provider>
+    <AppContext.Provider value={state} displayName={`${name}_context`}>
+      <AppDispatchContext.Provider value={dispatch} displayName={`${name}_dispatch_context`} >
+        {children}
+      </AppDispatchContext.Provider>
+    </AppContext.Provider>
   )
 })
 
@@ -68,11 +65,14 @@ const ContextComposer = ({contexts, children}) => {
 }
 
 export const Provider = ({ features, children, store }) => {
+  const [context] = useState(store);
   const contexts = features.map(name => <FeatureContextProvider store={store} name={name} />)
   return (
-    <ContextComposer contexts={contexts}>
-      {children}
-    </ContextComposer>
+    <StoreContext.Provider value={context}>
+      <ContextComposer contexts={contexts}>
+        {children}
+      </ContextComposer>
+    </StoreContext.Provider>
   )
 }
 

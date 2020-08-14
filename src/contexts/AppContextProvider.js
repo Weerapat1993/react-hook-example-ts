@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { useImmerReducer } from 'use-immer';
 import { postSlice } from '../features/post/redux/postSlice'
 import { userSlice } from '../features/user/redux/userSlice'
-import { store } from '../config/store';
 
 // Combine Reducer
 export const mainReducer = (state, action) => ({
@@ -11,11 +10,11 @@ export const mainReducer = (state, action) => ({
 });
 
 // Context API
-export const AppContext = React.createContext(store.initialState)
+export const AppContext = React.createContext()
 export const DispatchContext = React.createContext();
 
 // Context Provider
-export const AppContextProvider = React.memo(({ children }) => {
+export const AppContextProvider = React.memo(({ children, store }) => {
   const [state, dispatch] = useImmerReducer(mainReducer, store.initialState)
   // const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch])
   return (

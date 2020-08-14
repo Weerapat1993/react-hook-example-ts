@@ -5,13 +5,14 @@ import 'beautiful-react-ui/beautiful-react-ui.css';
 import User from './features/user/User';
 import './App.css';
 import { Provider } from './config/context';
+import { store } from './config/store';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <Provider features={['post', 'user']}>
+        <Provider store={store} features={['post', 'user']}>
           <Post userId={0} />
           <User userId={0} />
         </Provider>

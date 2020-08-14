@@ -35,8 +35,8 @@ const ContextComposer = ({contexts, children}) => {
   }
 }
 
-export const Provider = ({ features, children }) => {
-  const contexts = features.map(name => <FeatureContextProvider name={name} />)
+export const Provider = ({ features, children, store }) => {
+  const contexts = features.map(name => <FeatureContextProvider store={store} name={name} />)
   return (
     <ContextComposer contexts={contexts}>
       {children}

@@ -55,7 +55,10 @@ const useDispatch = () => {
   return dispatch;
 }
 
+const useConsumer = () => [AppContext.Consumer, DispatchContext.Consumer];
+
 export {
   useSelector,
   useDispatch,
+  useConsumer,
 }

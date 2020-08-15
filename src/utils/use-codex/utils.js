@@ -93,17 +93,17 @@ export const querySlice = (name) => createSlice({
 export const configureStore = (config) => {
   const { reducer, initialState } = config;
   const reducerNames = Object.keys(reducer).map(key => key)
-  const contextStore = {};
-  const dispatchStore = {};
+  const ContextStore = {};
+  const DispatchStore = {};
   reducerNames.forEach(name => {
-    contextStore[name] = createContext(initialState[name]);
-    dispatchStore[name] = createContext()
+    ContextStore[name] = createContext(initialState[name]);
+    DispatchStore[name] = createContext()
   })
-  const context = (name) => contextStore[name]
-  const dispatch = (name) => dispatchStore[name]
+  const Context = (name) => ContextStore[name]
+  const Dispatch = (name) => DispatchStore[name]
   return {
-    context,
-    dispatch,
+    Context,
+    Dispatch,
     initialState,
     reducer,
   }

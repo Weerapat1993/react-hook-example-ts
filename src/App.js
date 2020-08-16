@@ -6,6 +6,7 @@ import User from './features/user/User';
 import './App.css';
 import { Provider } from './utils/use-codex';
 import { store } from './app/store';
+import TestHOC from './features/user/TestHoc';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Provider store={store}>
           <Post userId={0} />
           <User userId={0} />
+          <TestHOC userId={1} />
         </Provider>
       </header>
     </div>
